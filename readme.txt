@@ -4,7 +4,7 @@ Donate link: http://fullthrottledevelopment.com/donate?plugin=ft_signature_manag
 Tags: posts, signature, sign
 Requires at least: 2.5
 Tested up to: 2.7
-Stable tag: 1.0
+Stable tag: 1.1
 
 FT Signature Manager allows your authors to create a signature to be appended to the end of their posts.
 

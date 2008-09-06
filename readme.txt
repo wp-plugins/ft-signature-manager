@@ -25,7 +25,7 @@ Regardless of the default setting, your authors may toggle the inclusion of the 
 
 = Where do I edit my signature =
 
-1. Log into WP with author privledges and click the 'Settings' link.
+1. Log into WP with author privledges and click the 'Profile' link.
 1. Select 'Signature Options' and type in your signature.
 
 = Can I control whether the signature is displayed / hidden on a specific post =

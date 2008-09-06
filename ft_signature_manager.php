@@ -3,7 +3,7 @@
 Plugin Name: FT Signature Manager
 Plugin URI: http://fullthrottledevelopment.com/signature_manager
 Description: FT Signature Manager allows each author on your blog to include a signature at the end of their posts.
-Version: 1.1
+Version: 1.2
 Author: FullThrottle Development
 Author URI: http://fullthrottledevelopment.com/
 */
@@ -27,10 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Release History
  1.0 - Initial Release
  1.1 - Fixed a bug that prevented writing / editing pages.
+ 1.2 - Moved Signature Management to profile page.
 */
 
 
-define( 'FT_Signature_Manager_Vesion' , '1.0' );
+define( 'FT_Signature_Manager_Vesion' , '1.2' );
 
 // Setup form security
 if ( !function_exists('wp_nonce_field') ) {
@@ -45,7 +46,7 @@ if ( !function_exists('wp_nonce_field') ) {
 
 //Add admin page links and call page
 function ft_signature_manager_admin_link() {
-	add_options_page('Signature Options', 'Signature Options', 3, basename(__FILE__), 'ft_signature_manager_admin_page');
+	add_submenu_page('users.php', 'Signature Options', 'Signature Options', 1, basename(__FILE__), 'ft_signature_manager_admin_page');
 }
 
 //This function contains the content for the admin page

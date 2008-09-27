@@ -4,7 +4,7 @@ Donate link: http://fullthrottledevelopment.com/donate?plugin=ft_signature_manag
 Tags: posts, signature, sign
 Requires at least: 2.5
 Tested up to: 2.7
-Stable tag: 1.0
+Stable tag: 1.3
 
 FT Signature Manager allows your authors to create a signature to be appended to the end of their posts.
 
@@ -16,6 +16,12 @@ The admin screen gives each author the ability to format their signature (a text
 
 Regardless of the default setting, your authors may toggle the inclusion of the signature to 'on' or 'off' for each individual post at the bottom of the Write Post and Edit Post screens.
 
+=Release History=
+ 1.3 - Fixed a bug that caused signatures not to show up on certain server configs.
+ 1.2 - Moved Signature Management to profile page.
+ 1.1 - Fixed a bug that prevented writing / editing pages.
+ 1.0 - Initial Release
+
 == Installation ==
 
 1. Upload `ft_signature_manager.php` to the `/wp-content/plugins/` directory
@@ -25,7 +31,7 @@ Regardless of the default setting, your authors may toggle the inclusion of the 
 
 = Where do I edit my signature =
 
-1. Log into WP with author privledges and click the 'Settings' link.
+1. Log into WP with author privledges and click the 'Profile' link.
 1. Select 'Signature Options' and type in your signature.
 
 = Can I control whether the signature is displayed / hidden on a specific post =

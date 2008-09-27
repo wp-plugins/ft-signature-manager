@@ -3,7 +3,7 @@
 Plugin Name: FT Signature Manager
 Plugin URI: http://fullthrottledevelopment.com/signature_manager
 Description: FT Signature Manager allows each author on your blog to include a signature at the end of their posts.
-Version: 1.0
+Version: 1.3
 Author: FullThrottle Development
 Author URI: http://fullthrottledevelopment.com/
 */
@@ -26,10 +26,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Release History
  1.0 - Initial Release
+ 1.1 - Fixed a bug that prevented writing / editing pages.
+ 1.2 - Moved Signature Management to profile page.
+ 1.3 - Fixed a bug that caused signatures not to show up on certain server configs.
 */
 
 
-define( 'FT_Signature_Manager_Vesion' , '1.0' );
+define( 'FT_Signature_Manager_Vesion' , '1.2' );
 
 // Setup form security
 if ( !function_exists('wp_nonce_field') ) {
@@ -44,7 +47,7 @@ if ( !function_exists('wp_nonce_field') ) {
 
 //Add admin page links and call page
 function ft_signature_manager_admin_link() {
-	add_options_page('Signature Options', 'Signature Options', 3, basename(__FILE__), 'ft_signature_manager_admin_page');
+	add_submenu_page('users.php', 'Signature Options', 'Signature Options', 1, basename(__FILE__), 'ft_signature_manager_admin_page');
 }
 
 //This function contains the content for the admin page
@@ -152,8 +155,9 @@ function ft_signature_manager_post_box_content() {
 //This function saves the content from my event box
 function ft_signature_manager_save_meta_box() {
 	global $wpdb;
+
 	//fire off if we're on the post screen
-	//if( $_SERVER['REQUEST_URI'] == '/wp-admin/post-new.php' || $_SERVER['REQUEST_URI'] == '/wp-admin/post.php') {
+	if ( $_POST['post_type'] == 'post' ){
 		//form security
 		check_admin_referer( '$ft_signature_manager_nonce', FT_Signature_Manager_NONCE );
 
@@ -175,7 +179,7 @@ function ft_signature_manager_save_meta_box() {
 		}else{
 			delete_post_meta( $id, 'ft_signature_manager' );
 		}
-	//}
+	}
 }
 
 //This function adds the signature to the end of the post if set on write-post page

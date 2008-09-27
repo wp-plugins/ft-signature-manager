@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-define( 'FT_Signature_Manager_Vesion' , '1.2' );
+define( 'FT_Signature_Manager_Vesion' , '1.3' );
 
 // Setup form security
 if ( !function_exists('wp_nonce_field') ) {

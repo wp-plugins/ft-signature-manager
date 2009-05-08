@@ -1,5 +1,5 @@
 === FT Signature Manager ===
-Contributors: blepoxp
+Contributors: fullthrottledevelopment,blepoxp
 Donate link: http://fullthrottledevelopment.com/donate?plugin=ft_signature_manager
 Tags: posts, signature, sign
 Requires at least: 2.5

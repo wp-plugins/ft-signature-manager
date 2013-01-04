@@ -3,12 +3,12 @@
 Plugin Name: FT Signature Manager
 Plugin URI: http://fullthrottledevelopment.com/signature_manager
 Description: FT Signature Manager allows each author on your blog to include a signature at the end of their posts.
-Version: 1.3
+Version: 1.4
 Author: FullThrottle Development
 Author URI: http://fullthrottledevelopment.com/
 */
 
-/*Copyright 2008 FullThrottle Development (http://fullthrottledevelopment.com)
+/*Copyright 2008 - 2013 FullThrottle Development (http://fullthrottledevelopment.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,8 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  1.3 - Fixed a bug that caused signatures not to show up on certain server configs.
 */
 
-
-define( 'FT_Signature_Manager_Vesion' , '1.3' );
+define( 'FT_Signature_Manager_Vesion' , '1.4' );
 
 // Setup form security
 if ( !function_exists('wp_nonce_field') ) {
@@ -47,7 +46,7 @@ if ( !function_exists('wp_nonce_field') ) {
 
 //Add admin page links and call page
 function ft_signature_manager_admin_link() {
-	add_submenu_page('users.php', 'Signature Options', 'Signature Options', 1, basename(__FILE__), 'ft_signature_manager_admin_page');
+	add_submenu_page('users.php', 'Signature Options', 'Signature Options', 'read', basename(__FILE__), 'ft_signature_manager_admin_page');
 }
 
 //This function contains the content for the admin page
@@ -57,25 +56,25 @@ function ft_signature_manager_admin_page(){
 	if ( isset($_POST['ft_signature_manager_update']) && $_POST['ft_signature_manager_update'] == 'update' ){
 		check_admin_referer( '$ft_signature_manager_nonce', FT_Signature_Manager_NONCE );	
 		if ( isset($_POST['ft_signature_01']) && !empty($_POST['ft_signature_01']) ){
-			if ( update_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01' , $wpdb->prepare($_POST['ft_signature_01'] ) ) ){
-				$current_signature = $wpdb->prepare( $_POST['ft_signature_01'] );
+			if ( update_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01' , addslashes( $_POST['ft_signature_01'] ) ) ){
+				$current_signature = addslashes( $_POST['ft_signature_01'] );
 			}
 		}else{
-			delete_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01' , $wpdb->prepare($_POST['ft_signature_01'] ) );
+			delete_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01' , addslashes($_POST['ft_signature_01'] ) );
 		}
 		
 		if ( isset($_POST['ft_signature_01_default']) && !empty($_POST['ft_signature_01_default']) ){
-			if ( update_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01_default' , $wpdb->prepare($_POST['ft_signature_01_default'] ) ) ){
-				$current_default = $wpdb->prepare( $_POST['ft_signature_01_default'] );
+			if ( update_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01_default' , addslashes($_POST['ft_signature_01_default'] ) ) ){
+				$current_default = addslashes( $_POST['ft_signature_01_default'] );
 			}
 		}else{
-			delete_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01_default' , $wpdb->prepare($_POST['ft_signature_01_default'] ) );
+			delete_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01_default' , addslashes($_POST['ft_signature_01_default'] ) );
 			$current_default = '';
 		}
 	}
 
-	if ( !isset($current_signature) ){ $current_signature = get_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01' ); }
-	if ( !isset($current_default) ) { $current_default = get_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01_default' ); }
+	if ( !isset($current_signature) ){ $current_signature = get_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01', true ); }
+	if ( !isset($current_default) ) { $current_default = get_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01_default', true ); }
 	
 	?>
 	<div class="wrap">
@@ -93,9 +92,9 @@ function ft_signature_manager_admin_page(){
 				<input type="submit" name="submit" value="<?php _e('Update');?>" />
 			</p>
 		</form>
-		<?php if ( get_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01' ) ){ ?>
+		<?php if ( get_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01', true ) ){ ?>
 		<h2 style="margin:20px 0;">Preview</h2>
-		<div><?php echo get_usermeta( ft_signature_manager_current_userID() , 'ft_signature_01' );?></div>
+		<div><?php echo get_user_meta( ft_signature_manager_current_userID() , 'ft_signature_01', true );?></div>
 		<?php } ?>
 	</div>
 	<?php
@@ -111,7 +110,7 @@ function ft_signature_manager_current_userID(){
 //This function determines if the specified passed value is equal to the value in the DB and returns 'checked' if it is.
 function ft_signature_manager_default_setting( $value ){
 	if ( !empty($value) ){
-		if ( get_usermeta( ft_signature_manager_current_userID() , "ft_signature_01_default" ) == $value ){
+		if ( get_user_meta( ft_signature_manager_current_userID() , "ft_signature_01_default", true ) == $value ){
 			echo 'checked';
 		}else{
 			echo '';
@@ -139,7 +138,7 @@ function ft_signature_manager_post_box_content() {
 	}
 
 	if ( !isset($value) || $value == '' || empty($value) ){
-		$value = get_usermeta( ft_signature_manager_current_userID() , "ft_signature_01_default" );
+		$value = get_user_meta( ft_signature_manager_current_userID() , "ft_signature_01_default", true );
 	}
 	
 	?>
@@ -157,7 +156,7 @@ function ft_signature_manager_save_meta_box() {
 	global $wpdb;
 
 	//fire off if we're on the post screen
-	if ( $_POST['post_type'] == 'post' ){
+	if ( (!empty( $_POST['post_type'] ) ) && ( $_POST['post_type'] == 'post' ) ){
 		//form security
 		check_admin_referer( '$ft_signature_manager_nonce', FT_Signature_Manager_NONCE );
 
@@ -172,9 +171,9 @@ function ft_signature_manager_save_meta_box() {
 		//if id is set, update postmeta, otherwise, delete any existing postmeta.
 		if ( isset($_POST['ft_signature_manager'] ) && $_POST['ft_signature_manager'] != '' ){
 			if ( get_post_meta( $id, 'ft_signature_manager') ){
-				update_post_meta( $id , 'ft_signature_manager' , $wpdb->prepare($_POST['ft_signature_manager'] ) );
+				update_post_meta( $id , 'ft_signature_manager' , addslashes($_POST['ft_signature_manager'] ) );
 			}else{
-				add_post_meta( $id , 'ft_signature_manager' , $wpdb->prepare($_POST['ft_signature_manager'] ) );
+				add_post_meta( $id , 'ft_signature_manager' , addslashes($_POST['ft_signature_manager'] ) );
 			}
 		}else{
 			delete_post_meta( $id, 'ft_signature_manager' );
@@ -190,7 +189,7 @@ function ft_signature_manager_add_signature( $content ){
 		$mypost = $post->ID;
 		
 		if ( get_post_meta( $mypost , 'ft_signature_manager' , true ) == 'yes' ){
-			$signature = get_usermeta( $post->post_author , 'ft_signature_01' );
+			$signature = get_user_meta( $post->post_author , 'ft_signature_01', true );
 			$sig = $content.$signature;
 			return $sig;
 		}
@@ -210,4 +209,3 @@ add_action( 'write_post', 'ft_signature_manager_save_meta_box' );
 add_action( 'edit_post', 'ft_signature_manager_save_meta_box' );
 
 add_filter( 'the_content' , 'ft_signature_manager_add_signature' );
-?>

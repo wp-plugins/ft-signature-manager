@@ -1,10 +1,10 @@
 === FT Signature Manager ===
-Contributors: fullthrottledevelopment, blepoxp
+Contributors: fullthrottledevelopment,blepoxp
 Donate link: http://fullthrottledevelopment.com/donate?plugin=ft_signature_manager
 Tags: posts, signature, sign
 Requires at least: 2.5
-Tested up to: 2.7
-Stable tag: 1.3
+Tested up to: 3.5
+Stable tag: trunk
 
 FT Signature Manager allows your authors to create a signature to be appended to the end of their posts.
 
@@ -17,6 +17,7 @@ The admin screen gives each author the ability to format their signature (a text
 Regardless of the default setting, your authors may toggle the inclusion of the signature to 'on' or 'off' for each individual post at the bottom of the Write Post and Edit Post screens.
 
 =Release History=
+ 1.4 - Updated for WordPress 3.5.
  1.3 - Fixed a bug that caused signatures not to show up on certain server configs.
  1.2 - Moved Signature Management to profile page.
  1.1 - Fixed a bug that prevented writing / editing pages.
